@@ -50,7 +50,7 @@ def plot_with_glow(x, y, k: float):
     ax.axhline(0, color=(1, 1, 1, 0.25), linewidth=1)
     ax.axvline(0, color=(1, 1, 1, 0.25), linewidth=1)
 
-    ax.set_title("Feliz día del cariño mi dieguisss <3", pad=14, fontsize=14, color=(1, 1, 1, 0.90))
+    ax.set_title("Te amo mi dieguisss <3", pad=14, fontsize=14, color=(1, 1, 1, 0.90))
     ax.text(
         0.5, -0.10, f"k = {k:.2f}",
         transform=ax.transAxes,
