@@ -8,7 +8,7 @@ from sympy.parsing.sympy_parser import parse_expr, standard_transformations, imp
 
 # Símbolo global
 
-x = sp.symbols(‘x’)
+x = sp.symbols('x')
 
 # Transformaciones que permiten: 2x, 0.2x, 3sin(x), x^2, etc.
 
