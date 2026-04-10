@@ -15,7 +15,7 @@ x = sp.symbols('x')
 TRANSFORMS = standard_transformations + (implicit_multiplication_application, convert_xor)
 
 def parse_ecuacion(s):
-return parse_expr(s, transformations=TRANSFORMS, local_dict={“x”: x})
+return parse_expr(s, transformations=TRANSFORMS, local_dict={"x": x})
 
 # <3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3 INTERFAZ
 
