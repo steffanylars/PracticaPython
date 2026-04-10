@@ -135,36 +135,26 @@ def interpolacionCuadratica(ecuacion, a, b, cantIter, objetivo):
         x4 = 0.5 * num / den
         y4 = float(ecuacion.subs(x, x4))
 
-        # Reemplazar el peor punto
         puntos = sorted([(x1, y1), (x2, y2), (x3, y3), (x4, y4)], key=lambda p: p[1])
         if objetivo == "Minimizar":
-            mejores = puntos[:3]  # los 3 con menor y
+            mejores = puntos[:3]
         else:
-            mejores = puntos[-3:]  # los 3 con mayor y
+            mejores = puntos[-3:]
         mejores = sorted(mejores, key=lambda p: p[0])
         x1, x2, x3 = mejores[0][0], mejores[1][0], mejores[2][0]
     return x2
 
 
-def errorPorcentual(listaX, ecuacion):
-    """Error % vs raíz teórica de la derivada (puntos críticos)."""
+def errorPorcentual(listaX, teorico):
+    """Error % vs valor teórico ya filtrado por tipo (min/max)."""
+    if teorico is None:
+        return [None] * len(listaX)
     errores = []
-    try:
-        criticos = sp.solve(sp.diff(ecuacion, x), x)
-        criticos = [float(c) for c in criticos if c.is_real]
-    except Exception:
-        criticos = []
-
     for xi in listaX:
-        if not criticos:
-            errores.append(None)
-            continue
-        # tomar el crítico más cercano
-        cercano = min(criticos, key=lambda c: abs(c - xi))
-        if cercano == 0:
-            errores.append(abs(xi - cercano))
+        if teorico == 0:
+            errores.append(abs(xi - teorico))
         else:
-            errores.append(abs((xi - cercano) / cercano) * 100)
+            errores.append(abs((xi - teorico) / teorico) * 100)
     return errores
 
 
@@ -200,12 +190,20 @@ if st.button("Métodos Numéricos"):
         "Newton Raphson": newtonRaphson(ecuacion, x0, cantIter),
         "Interpolación Cuadrática": interpolacionCuadratica(ecuacion, a, b, cantIter, objetivo),
     }
-    errores = errorPorcentual(list(resultados.values()), ecuacion)
 
-    # Valor teórico: punto crítico real más cercano al promedio de las aproximaciones
+    # Valor teórico: punto crítico que coincida con el objetivo (min o max)
     try:
-        criticos = sp.solve(sp.diff(ecuacion, x), x)
+        d1 = sp.diff(ecuacion, x)
+        d2 = sp.diff(d1, x)
+        criticos = sp.solve(d1, x)
         criticos = [float(c) for c in criticos if c.is_real]
+        # Filtrar por tipo según segunda derivada
+        if objetivo == "Minimizar":
+            criticos = [c for c in criticos if float(d2.subs(x, c)) > 0]
+        else:
+            criticos = [c for c in criticos if float(d2.subs(x, c)) < 0]
+        # Quedarse solo con los que estén dentro del rango [a, b]
+        criticos = [c for c in criticos if float(a) <= c <= float(b)]
     except Exception:
         criticos = []
 
@@ -214,6 +212,8 @@ if st.button("Métodos Numéricos"):
         teorico = min(criticos, key=lambda c: abs(c - promedio))
     else:
         teorico = None
+
+    errores = errorPorcentual(list(resultados.values()), teorico)
 
     df = pd.DataFrame(
         {
