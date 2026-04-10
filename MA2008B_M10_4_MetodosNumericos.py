@@ -26,7 +26,7 @@ st.markdown("""
 - Si dejas $x_0$ vacío, se usará $(a+b)/2$.
 """)
 
-ecuacion_str = st.text_input("Ingresa tu ecuación:", value="x**2 - 4*x + 3")
+ecuacion_str = st.text_input("Ingresa tu ecuación:", value="exp(0.5x) + exp(-x^2) - 0.2x")
 
 col1, col2, col3 = st.columns(3)
 col4, col5, col6 = st.columns(3)
