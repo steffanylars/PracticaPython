@@ -19,56 +19,56 @@ return parse_expr(s, transformations=TRANSFORMS, local_dict={"x": x})
 
 # <3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3 INTERFAZ
 
-st.title(“Métodos Numéricos”)
-st.write(“A00838589 - Steffany Mishell Lara Muy”)
-st.write(“Escribe tu polinomio. Algunos puntos a tomar en cuenta:”)
-st.markdown(”””
+st.title("Métodos Numéricos")
+st.write("A00838589 - Steffany Mishell Lara Muy")
+st.write("Escribe tu polinomio. Algunos puntos a tomar en cuenta:")
+st.markdown("""
 
 - El número $e$ se escribe como `exp`. Ej: `exp(x)` para $e^x$.
 - Ya puedes usar **multiplicación implícita**: `2x`, `0.2x`, `3sin(x)` funcionan.
 - Para potencias usa `x**2` o `x^2`.
 - La variable independiente siempre es `x`.
 - Si dejas $x_0$ vacío, se usará $(a+b)/2$.
-  “””)
+  """)
 
-ecuacion_str = st.text_input(“Ingresa tu ecuación:”, value=“x**2 - 4*x + 3”)
+ecuacion_str = st.text_input("Ingresa tu ecuación:", value="x**2 - 4*x + 3")
 
 col1, col2, col3 = st.columns(3)
 col4, col5, col6 = st.columns(3)
 with col1:
-a = st.number_input(“a”, min_value=-10000.0, max_value=10000.0, value=-5.0, step=0.01)
+a = st.number_input("a", min_value=-10000.0, max_value=10000.0, value=-5.0, step=0.01)
 with col2:
-b = st.number_input(“b”, min_value=-10000.0, max_value=10000.0, value=5.0, step=0.01)
+b = st.number_input("b", min_value=-10000.0, max_value=10000.0, value=5.0, step=0.01)
 with col3:
-cantIter = st.number_input(“Iteraciones”, min_value=1, value=10, step=1)
+cantIter = st.number_input("Iteraciones", min_value=1, value=10, step=1)
 with col4:
-x0 = st.number_input(“x0”, value=(a + b) / 2)
+x0 = st.number_input("x0", value=(a + b) / 2)
 with col5:
-alfa = st.number_input(“Alfa (Descenso)”, value=0.05, step=0.01)
+alfa = st.number_input("Alfa (Descenso)", value=0.05, step=0.01)
 with col6:
-ffib = st.number_input(“Cant. F. Fibonacci”, min_value=3, value=10, step=1)
+ffib = st.number_input("Cant. F. Fibonacci", min_value=3, value=10, step=1)
 
-objetivo = st.selectbox(“Selecciona el objetivo”, (“Minimizar”, “Maximizar”))
+objetivo = st.selectbox("Selecciona el objetivo", ("Minimizar", "Maximizar"))
 
 # <3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3 ERRORES
 
-@st.dialog(“Error”)
+@st.dialog("Error")
 def mostrar_error(msg):
 st.write(msg)
 
 # <3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3 MÉTODOS NUMÉRICOS
 
 def descenso(ecuacion, x0, alfa, cantIter, objetivo):
-“”“Descenso/ascenso por gradiente.”””
+"""Descenso/ascenso por gradiente."""
 gradiente = sp.diff(ecuacion, x)
-signo = -1 if objetivo == “Minimizar” else 1
+signo = -1 if objetivo == "Minimizar" else 1
 xi = float(x0)
 for _ in range(int(cantIter)):
 xi = xi + signo * float(alfa) * float(gradiente.subs(x, xi))
 return xi
 
 def metodoFibonacci(ecuacion, ffib, a, b, objetivo, cantIter):
-“”“Búsqueda de Fibonacci.”””
+"""Búsqueda de Fibonacci."""
 n = int(ffib)
 fib = [0, 1]
 for i in range(2, n + 1):
@@ -98,7 +98,7 @@ return (a + b) / 2
 ```
 
 def razonDorada(ecuacion, a, b, cantIter, objetivo):
-“”“Búsqueda de razón dorada.”””
+"""Búsqueda de razón dorada."""
 fi = (5 ** 0.5 - 1) / 2
 a, b = float(a), float(b)
 for _ in range(int(cantIter)):
@@ -106,7 +106,7 @@ x1 = b - fi * (b - a)
 x2 = a + fi * (b - a)
 y1 = float(ecuacion.subs(x, x1))
 y2 = float(ecuacion.subs(x, x2))
-if objetivo == “Minimizar”:
+if objetivo == "Minimizar":
 if y1 < y2:
 b = x2
 else:
@@ -119,7 +119,7 @@ a = x1
 return (a + b) / 2
 
 def newtonRaphson(ecuacion, x0, cantIter):
-“”“Newton-Raphson sobre f’(x)=0 para optimizar.”””
+"""Newton-Raphson sobre f’(x)=0 para optimizar."""
 d1 = sp.diff(ecuacion, x)
 d2 = sp.diff(d1, x)
 xi = float(x0)
@@ -131,7 +131,7 @@ xi = xi - float(d1.subs(x, xi)) / d2_val
 return xi
 
 def interpolacionCuadratica(ecuacion, a, b, cantIter, objetivo):
-“”“Interpolación cuadrática.”””
+"""Interpolación cuadrática."""
 x1, x2, x3 = float(a), (float(a) + float(b)) / 2, float(b)
 for _ in range(int(cantIter)):
 y1 = float(ecuacion.subs(x, x1))
@@ -157,7 +157,7 @@ return x2
 ```
 
 def errorPorcentual(listaX, teorico):
-“”“Error % vs valor teórico ya filtrado por tipo (min/max).”””
+"""Error % vs valor teórico ya filtrado por tipo (min/max)."""
 if teorico is None:
 return [None] * len(listaX)
 errores = []
@@ -170,23 +170,23 @@ return errores
 
 # <3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3<3 EJECUCIÓN
 
-if st.button(“Ver ecuación”):
+if st.button("Ver ecuación"):
 if not ecuacion_str:
-mostrar_error(“Escribe una ecuación.”)
+mostrar_error("Escribe una ecuación.")
 elif b <= a:
-mostrar_error(“El límite superior b debe ser mayor que a.”)
+mostrar_error("El límite superior b debe ser mayor que a.")
 else:
 try:
 ecuacion = parse_ecuacion(ecuacion_str)
-st.latex(rf”f(x) = {sp.latex(ecuacion)}, \quad x \in [{a}, {b}]”)
+st.latex(rf"f(x) = {sp.latex(ecuacion)}, \quad x \in [{a}, {b}]")
 except Exception:
-mostrar_error(“No pude interpretar la ecuación. Revisa la sintaxis.”)
+mostrar_error("No pude interpretar la ecuación. Revisa la sintaxis.")
 
-if st.button(“Métodos Numéricos”):
+if st.button("Métodos Numéricos"):
 try:
 ecuacion = parse_ecuacion(ecuacion_str)
 except Exception:
-mostrar_error(“No pude interpretar la ecuación.”)
+mostrar_error("No pude interpretar la ecuación.")
 st.stop()
 
 ```
