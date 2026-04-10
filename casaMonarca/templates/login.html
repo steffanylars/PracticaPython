@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}Iniciar Sesion — Casa Monarca{% endblock %}
+
+{% block contenido %}
+<style>
+    .login-wrapper {
+        display: flex; justify-content: center; align-items: center;
+        min-height: 80vh;
+    }
+    .login-card {
+        background: white; border-radius: 10px; padding: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 420px;
+    }
+    .login-card h1 { text-align: center; font-size: 24px; color: #2c3e50; margin-bottom: 4px; }
+    .login-card .subtitle { text-align: center; font-size: 13px; color: #7f8c8d; margin-bottom: 25px; }
+    .login-card hr { border: none; border-top: 1px solid #eee; margin: 15px 0; }
+    .login-card .form-group input { padding: 10px 12px; }
+    .login-card .btn { width: 100%; padding: 11px; font-size: 15px; margin-top: 8px; }
+    .test-users { font-size: 12px; color: #95a5a6; text-align: center; margin-top: 18px; line-height: 1.6; }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <h1>Casa Monarca</h1>
+        <p class="subtitle">Sistema de Gestion Segura de Identidades</p>
+        <hr>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="nombre_usuario">Usuario</label>
+                <input type="text" id="nombre_usuario" name="nombre_usuario"
+                       placeholder="Tu nombre de usuario" autofocus>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena"
+                       placeholder="Tu contraseña">
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </form>
+
+        <div class="test-users">
+            <strong>Usuarios de prueba:</strong><br>
+            admin / Admin123! &nbsp;•&nbsp; coord1 / Coord123!<br>
+            op1 / Oper123! &nbsp;•&nbsp; ext1 / Ext1234!
+        </div>
+    </div>
+</div>
+{% endblock %}
